@@ -26,6 +26,8 @@
 	text-align: left;
 	font-family: 'メイリオ',sans-serif;
 	font-weight: bold;
+	display:f lex;
+	position: relative;
 
 }
 
@@ -68,8 +70,55 @@
   overflow: scroll; /*親要素から子要素がはみ出した場合、スクロール領域にして隠す指定*/
 }
 
+/* -------------------- */
+/* ▼メニューバーの装飾 */
+/* -------------------- */
+ul.form {
+   margin: 0 auto;               /* メニューバー外側の余白(ゼロ) */
+   padding: 0px 0px 0px 15px; /* メニューバー内側の余白(左に15px) */
+   background-color: #00ccff; /* バーの背景色(濃い赤色) */
+}
 
+/* -------------------------- */
+/* ▼メインメニュー項目の装飾 */
+/* -------------------------- */
+ul.form li {
+   width: 300px;           /* メニュー項目の横幅(125px) */
+   display: inline-block;  /* ★1:横並びに配置する */
+   list-style-type: none;  /* ★2:リストの先頭記号を消す */
+   position: relative;     /* ★3:サブメニュー表示の基準位置にする */
+}
+ul.form a {
+   background-color: #00ccff; /* メニュー項目の背景色(濃い赤色) */
+   color: white;              /* メニュー項目の文字色(白色) */
+   line-height: 40px;         /* メニュー項目のリンクの高さ(40px) */
+   text-align: center;        /* メインメニューの文字列の配置(中央寄せ) */
+   text-decoration: none;     /* メニュー項目の装飾(下線を消す) */
+   font-weight: bold;         /* 太字にする */
+   display: block;            /* ★4:項目内全域をリンク可能にする */
+}
+ul.form a:hover {
+   background-color: #eeeeff; /* メニュー項目にマウスが載ったときの背景色(淡いピンク) */
+   color: #999999;            /* メニュー項目にマウスが載ったときの文字色(濃い赤色) */
+}
 
+/* -------------------- */
+/* ▼サブメニューの装飾 */
+/* -------------------- */
+ul.form ul {
+   display: none;       /* ★1:標準では非表示にする */
+   margin: 0px;         /* ★2:サブメニュー外側の余白(ゼロ) */
+   padding: 0px;        /* ★3:サブメニュー内側の余白(ゼロ) */
+   position: absolute;  /* ★4:絶対配置にする */
+	text-align:center;
+}
+
+/* ---------------------------------- */
+/* ▼サブメニューがある場合に開く処理 */   /* ※サブメニューが1階層しか存在しない場合の記述 */
+/* ---------------------------------- */
+ul.form li:hover ul {
+   display: block;      /* ★5:マウスポインタが載っている項目の内部にあるリストを表示する */
+}
 </style>
 </head>  
 
@@ -85,6 +134,7 @@
 	const un = document.getElementById("now");
 	const color = document.getElementById('colors');
 	const font = document.getElementById('font');
+	const font2 = document.getElementById('font2');
 	const size = document.getElementById('size');
 	const bgc = document.getElementById('bgcolor');
 	const moji = document.getElementById('m');
@@ -102,9 +152,16 @@
 	el.style.color = color.value;
 	el.style.fontSize = size.value;
 	el.style.fontFamily = font.value;
+	un.style.fontFamily = font2.value;
 	el.style.background = bgc.value;
 	un.style.background = bgc.value;
 	el.style.border.width = moji.value;
+
+	fbold = document.getElementById('fbold');
+	fbolder = document.getElementById('fbolder');						
+	var fitalic = document.getElementById('fitalic');
+	
+<!-- 時計用      -->
 	bold.addEventListener('change',boldChange,false)
 		
 	function boldChange(){
@@ -134,6 +191,38 @@
 	}
 	
 
+
+<!-- フリースペース用      -->
+	bold2.addEventListener('change',boldChange2,false)
+		
+	function boldChange2(){
+		if(bold2.checked==true){
+		un.style.fontWeight = "Bold";
+		}
+		else{
+		un.style.fontWeight = "normal";
+		}
+	}
+						
+	bolder2.addEventListener('change',bolderChange2,false)
+
+	function bolderChange2(){
+		if(bolder2.checked==true){
+		un.style.fontWeight = "Bolder";
+		}
+		else{
+		un.style.fontWeight = "normal";
+		}
+	}
+	
+	if(italic2.checked==true){
+	un.style.fontStyle = "Italic";
+	}else{
+	un.style.fontStyle = "Normal";
+	}
+
+
+
     const underColor = document.getElementById("under-color");
 underColor.addEventListener("change", () => {
   un.style.color = underColor.value;
@@ -149,11 +238,13 @@ moji.addEventListener("change", () => {
 					
 				// カラーピッカーの値を取得
 			var stColor = $('#outline-color').val();	
+			var stColor2 = $('#outline-color2').val();
 			//縁取りの太さを取得する
 			var stSize = $('#outline-width').val();
+			var stSize2 = $('#outline-width2').val();
 			  //縁取りの処理を行う
 			$('#time').css('-webkit-text-stroke',stSize + 'px ' + stColor);
-			$('#now').css('-webkit-text-stroke',stSize + 'px ' + stColor);
+			$('#now').css('-webkit-text-stroke',stSize2 + 'px ' + stColor2);
 						
 				
 						
@@ -179,75 +270,154 @@ moji.addEventListener("change", () => {
 </div> 
 </div>
 					
-					
-<div id = "form">
-	<br>
-フォント：<select id="font">
-<option value="Arial">Arial</option>
-<option value="Times New Roman">Times New Roman</option>
-<option value="Verdana">Verdana</option>
-<option value="Helvetica">Helvetica</option>
-<option value="Tahoma">Tahoma</option>
-<option value="Hiragino Kaku Gothic ProN">ヒラギノ角ゴシック</option>
-<option value="Meiryo">メイリオ</option>
-<option value="Yu Gothic">游ゴシック</option>
-<option value="Yu Mincho">游明朝</option>
-<option value="Source Han Sans">源ノ角ゴシック</option>
-<option value="Source Han Serif">源ノ明朝</option>
-<option value="太丸ゴシック">太丸ゴシック</option>
-<option value="丸ゴシックM">丸ゴシックM</option>
-<option value="角ゴシックBBB">角ゴシックBBB</option>
-<option value="明朝体">明朝体</option>
-<option value="ゴシック体">ゴシック体</option>
-<option value="教科書体">教科書体</option>
-<option value="Roboto">Roboto</option>
-<option value="Open Sans">Open Sans</option>
-<option value="Lato">Lato</option>
-<option value="Poppins">Poppins</option>
-<option value="Raleway">Raleway</option>
-<option value="Montserrat">Montserrat</option>
-<option value="Nunito">Nunito</option>
-<option value="Oswald">Oswald</option>
-<option value="PT Sans">PT Sans</option>
-<option value="Source Sans Pro">Source Sans Pro</option>
-</select><br>
-				<!--	自由フォント：<input type="text" placeholder="フォント名を入れてね！" id="fonts"><br>-->
-背景色：：<script src="jscolor.js"></script><input value="#00FF00" data-jscolor="{}" id = "bgcolor"><br>
-				
-フォントカラー：<script src="jscolor.js"></script><input value="#FFFFFF" data-jscolor="{}" id = "colors"><br>
-				
-フォントサイズ：<input type="range" min=""10 max=120  id="size"><br>
-				
-太字：<input type="checkbox" id="bold"><br>
-				
-強い太字：<input type="checkbox" id="bolder"><br>
-				
-斜体：<input type="checkbox" id="italic"><br>
-				
-縁取り：<input type="checkbox" id="fuchi"><br>				
+<br><br><br>				
+<ul class = "form">
+		
+  <li><a href="#">時計設定</a>
+	<ul>
+		<li><a href="#">フォント<select id="font">
 
-縁取り太さ：<input type="range" id="outline-width" min="0" max="10" value="1"> <br>
-				
-縁取りの色：<script src="jscolor.js"></script><input value="#FFFFF" data-jscolor="{}" id = "outline-color"><br>
-				
-自由文字：<input type="text" placeholder="自由に文字を入れてね！" id="text" value="LIVE!!" maxlength="12"><br>
-				
-文字カラー：<script src="jscolor.js"></script><input value="#FFFFF" data-jscolor="{}" id = "under-color"><br>		
-				
-文字サイズ：<input type="range" min=""10 max=120  id="m"><br>
+		<option value="Arial">Arial</option>
+		<option value="Times New Roman">Times New Roman</option>
+		<option value="Verdana">Verdana</option>
+		<option value="Helvetica">Helvetica</option>
+		<option value="Tahoma">Tahoma</option>
+		<option value="Hiragino Kaku Gothic ProN">ヒラギノ角ゴシック</option>
+		<option value="Meiryo">メイリオ</option>
+		<option value="Yu Gothic">游ゴシック</option>
+		<option value="Yu Mincho">游明朝</option>
+		<option value="Source Han Sans">源ノ角ゴシック</option>
+		<option value="Source Han Serif">源ノ明朝</option>
+		<option value="太丸ゴシック">太丸ゴシック</option>
+		<option value="丸ゴシックM">丸ゴシックM</option>
+		<option value="角ゴシックBBB">角ゴシックBBB</option>
+		<option value="明朝体">明朝体</option>
+		<option value="ゴシック体">ゴシック体</option>
+		<option value="教科書体">教科書体</option>
+		<option value="Roboto">Roboto</option>
+		<option value="Open Sans">Open Sans</option>
+		<option value="Lato">Lato</option>
+		<option value="Poppins">Poppins</option>
+		<option value="Raleway">Raleway</option>
+		<option value="Montserrat">Montserrat</option>
+		<option value="Nunito">Nunito</option>
+		<option value="Oswald">Oswald</option>
+		<option value="PT Sans">PT Sans</option>
+		<option value="Source Sans Pro">Source Sans Pro</option>
+        </select></a>
+		</li>
+	<li>
+	<a href="#">フォントカラー</a>
+		<script src="jscolor.js"></script><input value="#FFFFFF" data-jscolor="{}" id = "colors">
+	</li>
+	<li>
+	<a href="#">フォントサイズ</a>
+		<input type="range" min=""10 max=120  id="size">
+	</li>
+	<a href="#">字体</a>
+		<li><a href="#">太字</a>
+		<input type="checkbox" id="bold">
+	</li>
+	<li>
+		<a href="#">強い太字</a>
+		<input type="checkbox" id="bolder">
+	</li>
+	<li>
+		<a href="#">斜体</a>
+			<input type="checkbox" id="italic">
+	</li>
+	<li>
+		<a href="#">フチ取り設定</a>
+	</li>
+	<li>
+		<a href="#">フチ取り太さ</a><input type="range" id="outline-width" min="0" max="10" value="1"> <br>
+	</li>
+	<li>
+		<a href="#">フチ取りの色</a><script src="jscolor.js"></script><input value="#FFFFF" data-jscolor="{}" id = "outline-color"><br>
+	</li>
+  </ul>
 
-</div>
+  <li><a href="#">背景色</a><script src="jscolor.js"></script><input value="#00FF00" data-jscolor="{}" id = "bgcolor"></li>	
+			
+   <li>フリースペース<input type="text" placeholder="自由に文字を入れてね！" id="text" value="LIVE!!" maxlength="12"><br>
+	<ul>
+		<li><a href="#">フォント<select id="font2">
 
+		<option value="Arial">Arial</option>
+		<option value="Times New Roman">Times New Roman</option>
+		<option value="Verdana">Verdana</option>
+		<option value="Helvetica">Helvetica</option>
+		<option value="Tahoma">Tahoma</option>
+		<option value="Hiragino Kaku Gothic ProN">ヒラギノ角ゴシック</option>
+		<option value="Meiryo">メイリオ</option>
+		<option value="Yu Gothic">游ゴシック</option>
+		<option value="Yu Mincho">游明朝</option>
+		<option value="Source Han Sans">源ノ角ゴシック</option>
+		<option value="Source Han Serif">源ノ明朝</option>
+		<option value="太丸ゴシック">太丸ゴシック</option>
+		<option value="丸ゴシックM">丸ゴシックM</option>
+		<option value="角ゴシックBBB">角ゴシックBBB</option>
+		<option value="明朝体">明朝体</option>
+		<option value="ゴシック体">ゴシック体</option>
+		<option value="教科書体">教科書体</option>
+		<option value="Roboto">Roboto</option>
+		<option value="Open Sans">Open Sans</option>
+		<option value="Lato">Lato</option>
+		<option value="Poppins">Poppins</option>
+		<option value="Raleway">Raleway</option>
+		<option value="Montserrat">Montserrat</option>
+		<option value="Nunito">Nunito</option>
+		<option value="Oswald">Oswald</option>
+		<option value="PT Sans">PT Sans</option>
+		<option value="Source Sans Pro">Source Sans Pro</option>
+        </select></a>
+		</li>
+	<li>
+	<a href="#">フォントカラー</a>
+		<script src="jscolor.js"></script><input value="#FFFFFF" data-jscolor="{}" id = "under-color">
+	</li>
+	<li>
+	<a href="#">フォントサイズ</a>
+		<input type="range" min=""10 max=120  id="m">
+	</li>
+	<a href="#">字体</a>
+		<li><a href="#">太字</a>
+		<input type="checkbox" id="bold2">
+	</li>
+	<li>
+		<a href="#">強い太字</a>
+		<input type="checkbox" id="bolder2">
+	</li>
+	<li>
+		<a href="#">斜体</a>
+			<input type="checkbox" id="italic2">
+	</li>
+	<li>
+		<a href="#">フチ取り設定</a>
+	</li>
+	<li>
+		<a href="#">フチ取り太さ</a><input type="range" id="outline-width2" min="0" max="10" value="1"> <br>
+	</li>
+	<li>
+		<a href="#">フチ取りの色</a><script src="jscolor.js"></script><input value="#FFFFF" data-jscolor="{}" id = "outline-color2"><br>
+	</li>
+</ul>
+
+
+
+
+</div>	
 
 <script>
 $(function() {
 				
 // フォント選択の値を取得する
   var font = $("#font").val();
+  var font2 = $("#font2").val();
 
   // テキストのフォントを変更する
   $("#time").css("font-family", font);
-						
+  $("#now").css("font-family", font2);					
 						
 // フォント選択の値を取得する
 						
