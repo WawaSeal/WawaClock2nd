@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>デジタルクロックVer.2</title>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/dayjs/1.10.6/dayjs.min.js"></script>
 <link rel="preconnect" href="https://fonts.gstatic.com">
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap" rel="stylesheet">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<!-- デフォルト設定 -->
+<!-- jQuery読み込み -->
+<script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+
 <style>
 
 *{
@@ -29,13 +29,12 @@
 
 }
 
-.nowtime{
+.ground{
     margin-top: 15px;
     margin-left: 15px;
     width:600px;
     padding : 5px 0px 5px 0px;
     border-radius: 10px 10px 10px 10px;
-	background-color: green;
 }
 
 #time{
@@ -48,7 +47,7 @@
 	background-color: green;
 	width:600px;
 	height:150px;
-	-webkit-text-stroke:2px #000;
+	//-webkit-text-stroke:2px #000;
 }
 
  #colon{
@@ -60,9 +59,9 @@
 	color:white;
     display: inline;
     letter-spacing: 5px;/* 字間 */
-    font-size: 36px;
 	background-color: green;
-	-webkit-text-stroke:1px #000;
+	font-size: 48px;
+	//-webkit-text-stroke:1px #000;
     width: 600px;
   height: 150px;
   white-space: nowrap;/*テキストの改行を防ぐコード*/ 
@@ -76,7 +75,7 @@
 
 <body>
 <div class="clock">
-<div class="nowtime">
+<div class="ground">
     
 <p id="time"/>
   <script language="JavaScript">
@@ -87,9 +86,15 @@
 	const color = document.getElementById('colors');
 	const font = document.getElementById('font');
 	const size = document.getElementById('size');
-	//const moji = document.getElementById('m');
+	const bgc = document.getElementById('bgcolor');
+	const moji = document.getElementById('m');
 	const under = document.getElementById("under");
-						<!--var outline = document.getElementById("outline");-->
+					
+	   //背景色を取得
+  var backgroundcolor = $("#bgcolor").val();
+  //groundの変更を試みる
+  $(".ground").css("background-color",backgroundcolor);
+	var outline = document.getElementById("outline");
 	bold = document.getElementById('bold');
 	bolder = document.getElementById('bolder');						
 	var italic = document.getElementById('italic');
@@ -97,7 +102,9 @@
 	el.style.color = color.value;
 	el.style.fontSize = size.value;
 	el.style.fontFamily = font.value;
-	//el.style.border.width = moji.value;
+	el.style.background = bgc.value;
+	un.style.background = bgc.value;
+	el.style.border.width = moji.value;
 	bold.addEventListener('change',boldChange,false)
 		
 	function boldChange(){
@@ -127,67 +134,44 @@
 	}
 	
 
-							
+    const underColor = document.getElementById("under-color");
+underColor.addEventListener("change", () => {
+  un.style.color = underColor.value;
+});
+						
+						
+moji.addEventListener("change", () => {
+				//un.style.fontSize = moji.value;
+			$("#now").css('font-size',moji.value+"px");
+						console.log(now.style.font-size);
+	});								
+						
+					
+				// カラーピッカーの値を取得
+			var stColor = $('#outline-color').val();	
+			//縁取りの太さを取得する
+			var stSize = $('#outline-width').val();
+			  //縁取りの処理を行う
+			$('#time').css('-webkit-text-stroke',stSize + 'px ' + stColor);
+			$('#now').css('-webkit-text-stroke',stSize + 'px ' + stColor);
+						
+				
+						
 	let before = document.getElementById('now').textContent; //宣言
 	let str = document.getElementById("now");
 	let after = document.getElementById('text').textContent;
 	document.getElementById('now').textContent = document.getElementById('text').value;
 
 						
-const now = document.getElementById("now");
-const underColor = document.getElementById("under-color");
-underColor.addEventListener("change", () => {
-  now.style.color = underColor.value;
-});
-//moji.addEventListener("change", () => {
-//						now.style.fontSize = moji.value;
-//	});								
+			
+						
 	el.innerHTML = `${dt.format('HH')}<span id="colon">:</span>${dt.format('mm')}<span id="colon">:</span>${dt.format('ss')}`;
 	};
   setInterval(time, 1000);
   
   </script>
 					
-<script>
-$(function() {
-  // カラーピッカーの値を取得する
-  var color = $("#outline-color").val();
 
-  // テキストの輪郭線の色を変更する
-  $("#time").css("-webkit-text-stroke-color", color);
-
-  // スライダーの値を取得する
-  var width = $("#outline-width").val();
-
-  // テキストの輪郭線の太さを変更する
-  $("#time").css("-webkit-text-stroke-width", width + "px");
-
-function OutlineWidthChanger() {
-  // スライダーの値を取得する
-  var width = $("#outline-width").val();
-
-  // テキストの輪郭線の太さを変更する
-  $("#time").css("time.style.border-style","solid");
-  $("#time").css("time.style.border-width",width);
-}
-
-// フォント選択の値を取得する
-  var font = $("#font").val();
-
-  // テキストのフォントを変更する
-  $("#time").css("font-family", font);
-						
-						
-// フォント選択の値を取得する
-						
-  var fonts = $("#fonts").val();
-
-  // テキストのフォントを変更する
-  $("#time").css("font-family", fonts);
-						
-});
-						
-</script>		
 
 				
 <div id="now">NOW STREAMING</div>
@@ -228,25 +212,52 @@ function OutlineWidthChanger() {
 <option value="Source Sans Pro">Source Sans Pro</option>
 </select><br>
 				<!--	自由フォント：<input type="text" placeholder="フォント名を入れてね！" id="fonts"><br>-->
-フォントカラー：<script src="jscolor.js"></script><input value="#000000" data-jscolor="{}" id = "colors"><br>
+背景色：：<script src="jscolor.js"></script><input value="#00FF00" data-jscolor="{}" id = "bgcolor"><br>
+				
+フォントカラー：<script src="jscolor.js"></script><input value="#FFFFFF" data-jscolor="{}" id = "colors"><br>
+				
 フォントサイズ：<input type="range" min=""10 max=120  id="size"><br>
+				
 太字：<input type="checkbox" id="bold"><br>
+				
 強い太字：<input type="checkbox" id="bolder"><br>
+				
 斜体：<input type="checkbox" id="italic"><br>
-<!--<縁取り太さ：<input type="range" id="outline-width" min="1" max="10" value="1" onChange="OutlineWidthChanger()"> <br>
-			<!-- 縁取りの色：<script src="jscolor.js"></script><input value="#FFFFF" data-jscolor="{}" id = "outline-color"><br>-->
-				自由文字：<input type="text" placeholder="自由に文字を入れてね！" id="text" value="LIVE!!" maxlength="12"><br>
+				
+縁取り：<input type="checkbox" id="fuchi"><br>				
+
+縁取り太さ：<input type="range" id="outline-width" min="0" max="10" value="1"> <br>
+				
+縁取りの色：<script src="jscolor.js"></script><input value="#FFFFF" data-jscolor="{}" id = "outline-color"><br>
+				
+自由文字：<input type="text" placeholder="自由に文字を入れてね！" id="text" value="LIVE!!" maxlength="12"><br>
+				
 文字カラー：<script src="jscolor.js"></script><input value="#FFFFF" data-jscolor="{}" id = "under-color"><br>		
-<!--<input type="range" id="outline-width" min="1" max="10" value="1" onchange="OutlineWidthChanger()"><br>
+				
 文字サイズ：<input type="range" min=""10 max=120  id="m"><br>
-<input type="checkbox" id="outline-position-top">上<br>
-<input type="checkbox" id="outline-position-left">左<br>
-<input type="checkbox" id="outline-position-bottom">下<br>
-<input type="checkbox" id="outline-position-right">右<br>*/
-        -->
+
 </div>
 
 
+<script>
+$(function() {
 				
+// フォント選択の値を取得する
+  var font = $("#font").val();
+
+  // テキストのフォントを変更する
+  $("#time").css("font-family", font);
+						
+						
+// フォント選択の値を取得する
+						
+  var fonts = $("#fonts").val();
+
+  // テキストのフォントを変更する
+  $("#time").css("font-family", fonts);
+						
+});
+						
+</script>			
 </body>
 </html>
