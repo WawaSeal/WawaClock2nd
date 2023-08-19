@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>デジタルクロックVer.2</title>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/dayjs/1.10.6/dayjs.min.js"></script>
@@ -9,7 +8,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap" rel="stylesheet">
 <!-- jQuery読み込み -->
 <script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
-
+		<script src="cookie.js"></script>
 <style>
 
 *{
@@ -423,14 +422,53 @@ $(function() {
 // フォント選択の値を取得する
 						
   var fonts = $("#fonts").val();
-　　　　var fonts2 = $("#fonts2").val();
 
   // テキストのフォントを変更する
   $("#time").css("font-family", fonts);
-  $("#now").css("font-family", fonts2);
 						
 });
 						
-</script>			
+</script>	
+	
+<script>
+  // ページが読み込まれた際に実行する関数
+  window.onload = function() {
+    // IDのリスト
+    var input_ids = [
+      'colors', 'size', 'bold', 'bolder', 'italic', 'outline-width',
+      'outline-color', 'bgcolor', 'text', 'under-color', 'm', 'bold2',
+      'bolder2', 'italic2', 'outline-width2', 'outline-color2'
+    ];
+
+    // 保存された値を読み込んでセットする
+    input_ids.forEach(function(id) {
+      var element = document.getElementById(id);
+      if (element.type === 'checkbox') {
+        // checkboxの場合、'true'または'true'でない値（nullも含む）をチェックする
+        element.checked = localStorage.getItem(id) === 'true';
+      } else {
+        var value = localStorage.getItem(id);
+        if (value) {
+          element.value = value;
+        }
+      }
+    });
+
+    // 各input要素に変更イベントをバインドして、変更があればローカルストレージに保存
+    input_ids.forEach(function(id) {
+      var element = document.getElementById(id);
+      element.addEventListener('change', function() {
+        if (element.type === 'checkbox') {
+          // checkboxの場合、checkedプロパティを保存
+          localStorage.setItem(id, element.checked);
+        } else {
+          localStorage.setItem(id, element.value);
+        }
+      });
+    });
+  };
+</script>
+
+		
 </body>
 </html>
