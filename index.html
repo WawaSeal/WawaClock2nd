@@ -256,9 +256,9 @@ moji.addEventListener("change", () => {
 						
 			
 						
-	/*el.innerHTML = `${dt.format('HH')}<span id="colon">:</span>${dt.format('mm')}<span id="colon">:</span>${dt.format('ss')<br>${dt.getFullYear}<span id="colon">:</span>${dt.format('MM')}<span id="colon">:</span>${dt.format('DD')}`;*/
-	  el.innerHTML = `${dt.getFullYear()}/${dt.getMonth() + 1}/${dt.getDate()} <br> ${dt.getHours()}:${dt.getMinutes()}:${dt.getSeconds()}`;
-	};
+	/*el.innerHTML = `${dt.format('HH')}<span id="colon">:</span>${dt.format('mm')}<span id="colon">:</span>${dt.format('ss')`;*/
+	  el.innerHTML = `${dt.format('YYYY/MM/DD HH:mm:ss')}`;
+	  };
   setInterval(time, 1000);
   
   </script>
